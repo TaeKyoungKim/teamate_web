@@ -4,15 +4,17 @@ const Home = () => {
     const [user , setUser] = useState({})
 
     useEffect(()=>{
-        fetch('http://localhost:3001/data')
-        .then(resData=>{
-            console.log(resData)
-            setUser(resData)
+        fetch('/data')
+        .then(resData=>resData.json())
+        .then(res=>{
+            // console.log(res)
+            setUser(res)
+            
         })
     },[])
     return (
         <div>
-            This is Home page
+            {user.message} {user.name}!!!
         </div>
     )
 }
