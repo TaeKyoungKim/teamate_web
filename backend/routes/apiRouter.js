@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 var User = require('../models/User')
 var jwt = require('jsonwebtoken')
+var WithAuth = require('./middleware')
 
 const secret = "mysecrethhhh"
 router.get('/api/home', function(req , res, next){
@@ -27,6 +28,7 @@ router.post('/api/register' , function(req, res , next){
     const {email, password , username} = req.body
     // console.log(email)
     const user =new User({email , password , username})
+    
     user.save(function(err){
         if(err) {
             console.log(err)
@@ -68,4 +70,8 @@ router.post('/api/authenticate', function(req, res , next){
    
 })
 
+
+router.get('/checktoken', WithAuth,function(req, res ,next){
+    res.sendStatus(200)
+} )
 module.exports = router;
