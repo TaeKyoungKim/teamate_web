@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React, {useState } from 'react'
+import { useHistory  } from 'react-router-dom'
 
 
 const SignUp = () => {
@@ -8,6 +9,7 @@ const SignUp = () => {
       password:''
     })
 
+    const history = useHistory()
     function handelInputChange(e) {
       e.preventDefault()
       console.log(e.target)
@@ -20,9 +22,33 @@ const SignUp = () => {
 
     function onSubmit(e) {
       e.preventDefault()
-      console.log(user)
+      // console.log(user)
+      fetch('/api/register', {
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify(user)
+      })
+      .then(res=>{
+        console.log(res)
+        if(res.status === 200) {
+          console.log("Success")
+
+          history.push('/login')
+          
+        } else {
+          const error = new Error(res.error)
+          throw error
+        }
+       
+      })
+      .catch(err=>{
+        console.error(err)
+        alert('Error Signing in plese try again')
+      })
     }
-    console.log(user)
+    
     return (
        <form onSubmit={onSubmit}>
          <h1>SignUp Page</h1>
